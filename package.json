@@ -10,10 +10,13 @@
   "scripts": {
     "build": "tsc --noEmit",
     "lint": "biome check .",
-    "format": "biome format --write ."
+    "format": "biome format --write .",
+    "test": "playwright test --project=unit",
+    "test:list": "playwright test --project=api --project=cms --project=ui --list"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.12",
+    "@playwright/test": "^1.63.0",
     "typescript": "^7.0.2"
   }
 }
