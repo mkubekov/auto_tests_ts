@@ -8,9 +8,12 @@
     "node": ">=20"
   },
   "scripts": {
-    "build": "tsc --noEmit"
+    "build": "tsc --noEmit",
+    "lint": "biome check .",
+    "format": "biome format --write ."
   },
   "devDependencies": {
+    "@biomejs/biome": "2.5.12",
     "typescript": "^7.0.2"
   }
 }
