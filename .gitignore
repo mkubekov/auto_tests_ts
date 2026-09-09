@@ -6,3 +6,11 @@ blob-report/
 playwright/.cache/
 .env
 *.log
+
+# Claude Code
+.claude/
+CLAUDE.md
+CLAUDE.local.md
+
+# Project plan
+PLAN.md
