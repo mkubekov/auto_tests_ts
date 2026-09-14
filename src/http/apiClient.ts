@@ -120,7 +120,7 @@ export function toCurl(
     parts.push(`-H ${shellQuote("content-type: application/json")}`);
     parts.push(`-d ${shellQuote(JSON.stringify(body))}`);
   }
-  return parts.join(" \\n  ");
+  return parts.join(" \\\n  ");
 }
 
 export class ApiClient {

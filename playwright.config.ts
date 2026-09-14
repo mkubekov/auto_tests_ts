@@ -15,18 +15,22 @@ export default defineConfig({
     {
       name: "cms",
       testDir: "tests/e2e/cms",
-      use: { ...devices["Desktop Chrome"] },
-      trace: "retain-on-failure",
-      screenshot: "only-on-failure",
-      video: "retain-on-failure",
+      use: {
+        ...devices["Desktop Chrome"],
+        trace: "retain-on-failure",
+        screenshot: "only-on-failure",
+        video: "retain-on-failure",
+      },
     },
     {
       name: "ui",
       testDir: "tests/e2e/ui",
-      use: { ...devices["Desktop Chrome"] },
-      trace: "retain-on-failure",
-      screenshot: "only-on-failure",
-      video: "retain-on-failure",
+      use: {
+        ...devices["Desktop Chrome"],
+        trace: "retain-on-failure",
+        screenshot: "only-on-failure",
+        video: "retain-on-failure",
+      },
     },
   ],
 });
