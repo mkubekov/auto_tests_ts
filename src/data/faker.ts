@@ -32,3 +32,21 @@ export function runMarker(): string {
 export function uniqueName(): string {
   return `${runMarker()}-${randomUUID().slice(0, 6)}`;
 }
+
+/**
+ * Short sentence of whole words, at most `maxChars` long including the final period.
+ *
+ * Stands in for Python Faker's `text(max_nb_chars=...)`, which `@faker-js/faker` has no direct
+ * equivalent of: `lorem.text()` ignores length and slicing it cuts words in half.
+ */
+export function shortText(maxChars: number): string {
+  let text = faker.lorem.word();
+  for (;;) {
+    const next = `${text} ${faker.lorem.word()}`;
+    if (next.length + 1 > maxChars) {
+      break;
+    }
+    text = next;
+  }
+  return `${text.charAt(0).toUpperCase()}${text.slice(1, maxChars - 1)}.`;
+}
