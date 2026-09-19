@@ -17,9 +17,11 @@ import { CANCEL, DELETE, SAVE, SUCCESS_LOCATOR, SYSTEM_NAME } from "../../data/l
 import { type ApiClient, step } from "../../http/apiClient.js";
 import { responseJson } from "../../http/assertions.js";
 import { HttpStatus } from "../../models/enums.js";
+import { type CreatedEntity, isEntity, stripHtml } from "../shared.js";
 
-/** An entity as the API returned it. Keys are decided by the stand, so values stay `unknown`. */
-export type CreatedEntity = Record<string, unknown>;
+// Re-exported so a module's page object and its components import their form vocabulary from
+// one place, the way Python's `pages.cms.base` was the single import for both.
+export { type CreatedEntity, stripHtml } from "../shared.js";
 
 /** Locator of a form input. One helper replaces the per-field locator constants of the original. */
 export function field(name: string): string {
@@ -29,24 +31,6 @@ export function field(name: string): string {
 /** Locator of the caption an uploader is anchored at (`<label for="...">`). */
 export function fileField(name: string): string {
   return `[for="${name}"]`;
-}
-
-/**
- * Rich-text fields come back wrapped in tags (`<p>...</p>`); compare the text only.
- *
- * Python used BeautifulSoup. Node has no DOM, and pulling in an HTML parser for a single
- * assertion is not worth the dependency: the editor emits the markup it was given, so
- * dropping tags and decoding the handful of entities it can produce is enough.
- */
-export function stripHtml(value: string): string {
-  return value
-    .replace(/<[^>]*>/g, "")
-    .replaceAll("&nbsp;", " ")
-    .replaceAll("&lt;", "<")
-    .replaceAll("&gt;", ">")
-    .replaceAll("&quot;", '"')
-    .replaceAll("&#39;", "'")
-    .replaceAll("&amp;", "&");
 }
 
 /**
@@ -67,10 +51,6 @@ export type FormPrimitives = Pick<
   | "checkItem"
   | "checkFile"
 >;
-
-function isEntity(value: unknown): value is CreatedEntity {
-  return typeof value === "object" && value !== null && !Array.isArray(value);
-}
 
 /**
  * Fluent helpers for admin forms plus the contract every module implements.

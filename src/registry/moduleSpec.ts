@@ -6,6 +6,7 @@ import type { Page } from "@playwright/test";
 import type { z } from "zod";
 import type { ReferenceSource } from "../http/referenceData.js";
 import type { CmsPage } from "../pages/cms/CmsPage.js";
+import type { SitePage } from "../pages/site/SitePage.js";
 
 /** Any request schema: every module schema is an object built on `baseFields`. */
 export type AnySchema = z.ZodObject;
@@ -31,9 +32,10 @@ export type CmsPageClass<TSchema extends AnySchema = AnySchema> = new (
   page: Page,
 ) => CmsPage<z.infer<TSchema>>;
 
-// TODO(Step 14): tighten to `new (page: Page) => SitePage` once `SitePage` exists. Kept loose
-// so the registry and the site page objects stay independently buildable.
-export type SitePageClass = new (page: Page) => unknown;
+/** The public-site view of a module, bound to the same payload as its admin form. */
+export type SitePageClass<TSchema extends AnySchema = AnySchema> = new (
+  page: Page,
+) => SitePage<z.infer<TSchema>>;
 
 export interface ModuleSpec<TSchema extends AnySchema = AnySchema> {
   key: string;
@@ -41,7 +43,7 @@ export interface ModuleSpec<TSchema extends AnySchema = AnySchema> {
   schema: SchemaFactory<TSchema>;
   cmsPath?: string;
   CmsPageClass?: CmsPageClass<TSchema>;
-  SitePageClass?: SitePageClass;
+  SitePageClass?: SitePageClass<TSchema>;
   /** Discriminator used by page templates to embed this block (page-constructor blocks only). */
   blockType?: string;
   /** `false` for entities that need related entities first; they get dedicated tests. */
