@@ -41,13 +41,11 @@ test("patch field exists in the module schema", () => {
   }
 });
 
-test("a CMS page object always comes with a CMS path", () => {
-  // TODO(Step 15): make this two-way (`cmsPath` implies `CmsPageClass`) once every module with
-  // an admin form has its page object; until then `cmsPath` is set ahead of the class.
+test("a CMS page object and a CMS path always come together", () => {
+  // Either half alone is a module that silently never reaches the CMS suite: `hasCms()` needs
+  // both, so a form with no route (or a route with no form) would just not be collected.
   for (const module of allModules()) {
-    if (module.CmsPageClass !== undefined) {
-      expect(module.cmsPath, module.key).toBeDefined();
-    }
+    expect(module.CmsPageClass !== undefined, module.key).toBe(module.cmsPath !== undefined);
   }
 });
 
@@ -60,19 +58,21 @@ test("block type is reserved for page-constructor blocks", () => {
   expect(keys(blocks)).toEqual(["textBlocks", "galleryBlocks"]);
 });
 
-test("a site page object is only attached to a block", () => {
+test("a site page object is only attached to a block or the page template", () => {
+  // The page template is the one non-block module the public site renders on its own: it is
+  // the container the blocks are embedded in. `pageBlockModules()` still filters on
+  // `blockType`, so it stays out of the per-block rendering suite.
   for (const module of allModules()) {
     if (module.SitePageClass !== undefined) {
-      expect(module.blockType, module.key).toBeDefined();
+      expect(module.blockType !== undefined || module.key === "pages", module.key).toBe(true);
     }
   }
 });
 
 test("skip reason only makes sense with an admin form", () => {
-  // TODO(Step 15): check `hasCms(module)` instead of `cmsPath` once page objects are wired in.
   for (const module of allModules()) {
     if (module.cmsSkipReason !== undefined) {
-      expect(module.cmsPath, module.key).toBeDefined();
+      expect(hasCms(module), module.key).toBe(true);
     }
   }
 });
@@ -90,10 +90,7 @@ test("selectors reflect the registry", () => {
     expect(skipReason, module.key).toBe(module.cmsSkipReason);
   }
 
-  // TODO(Step 15): expect exactly ["textBlocks", "galleryBlocks"] once site page objects exist.
-  for (const key of keys(pageBlockModules())) {
-    expect(["textBlocks", "galleryBlocks"]).toContain(key);
-  }
+  expect(keys(pageBlockModules())).toEqual(["textBlocks", "galleryBlocks"]);
 });
 
 test("reference paths point at registered modules", () => {

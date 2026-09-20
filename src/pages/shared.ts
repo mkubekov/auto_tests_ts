@@ -54,3 +54,31 @@ export function stripHtml(value: string): string {
     .replaceAll("&#39;", "'")
     .replaceAll("&amp;", "&");
 }
+
+/** Read a nested object field of a created entity (a tooltip, a hero section, an address). */
+export function entityObject(entity: CreatedEntity, key: string): CreatedEntity {
+  const value = entity[key];
+  if (!isEntity(value)) {
+    throw new Error(`Field "${key}" of the created entity is not an object: ${String(value)}`);
+  }
+  return value;
+}
+
+/**
+ * Read one row of a list-of-objects field.
+ *
+ * `entityList(created, "items")[index]` is `CreatedEntity | undefined` under
+ * `noUncheckedIndexedAccess`, and the interesting failure — the stand stored fewer rows than
+ * the form sent — deserves to be named rather than to surface as "cannot read title of
+ * undefined" inside an assertion.
+ */
+export function entityAt(entity: CreatedEntity, key: string, index: number): CreatedEntity {
+  const items = entityList(entity, key);
+  const item = items[index];
+  if (item === undefined) {
+    throw new Error(
+      `Field "${key}" of the created entity has no row ${index}: ${items.length} in all`,
+    );
+  }
+  return item;
+}

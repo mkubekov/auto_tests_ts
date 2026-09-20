@@ -20,10 +20,10 @@ import { textBlockSchema } from "../models/pageConstructor/textBlock.js";
 import { citySchema } from "../models/regional/city.js";
 import { videoLessonsSchema } from "../models/sections/videoLessons.js";
 import { webhookSchema } from "../models/webhooks/webhook.js";
+import * as cms from "../pages/cms/index.js";
+import * as site from "../pages/site/index.js";
 import { defineModule, type ModuleSpec } from "./moduleSpec.js";
 
-// TODO(Step 15): add `CmsPageClass` / `SitePageClass` to every entry once the page objects
-// exist; `cmsPath` alone does not make a module appear in `cmsModules()`.
 export const MODULES = {
   handbooks: defineModule({
     key: "handbooks",
@@ -36,6 +36,7 @@ export const MODULES = {
     apiPath: "content/webhooks",
     schema: () => webhookSchema,
     cmsPath: "integrations/webhooks",
+    CmsPageClass: cms.Webhook,
     patchField: "name",
   }),
   statistics: defineModule({
@@ -43,6 +44,7 @@ export const MODULES = {
     apiPath: "content/statistics",
     schema: statisticSchema,
     cmsPath: "blocks/statistics",
+    CmsPageClass: cms.Statistic,
     patchField: "name",
   }),
   accordions: defineModule({
@@ -50,6 +52,7 @@ export const MODULES = {
     apiPath: "content/accordions",
     schema: accordionSchema,
     cmsPath: "blocks/accordions",
+    CmsPageClass: cms.Accordion,
     patchField: "name",
   }),
   banners: defineModule({
@@ -57,6 +60,7 @@ export const MODULES = {
     apiPath: "content/banners",
     schema: bannerSchema,
     cmsPath: "banners",
+    CmsPageClass: cms.Banner,
     patchField: "name",
   }),
   promoBanners: defineModule({
@@ -64,6 +68,7 @@ export const MODULES = {
     apiPath: "content/promo-banners",
     schema: () => promoBannerSchema,
     cmsPath: "promo-banners",
+    CmsPageClass: cms.PromoBanner,
     patchField: "name",
     cmsSkipReason: "activity period: the date-range picker is not automated yet",
   }),
@@ -72,6 +77,7 @@ export const MODULES = {
     apiPath: "content/footer-sections",
     schema: () => footerSectionSchema,
     cmsPath: "footer/sections",
+    CmsPageClass: cms.FooterSection,
     patchField: "name",
   }),
   footers: defineModule({
@@ -79,6 +85,7 @@ export const MODULES = {
     apiPath: "content/footers",
     schema: footerSchema,
     cmsPath: "footer",
+    CmsPageClass: cms.Footer,
     patchField: "name",
   }),
   headerSubcategories: defineModule({
@@ -86,6 +93,7 @@ export const MODULES = {
     apiPath: "content/header-subcategories",
     schema: () => headerSubcategorySchema,
     cmsPath: "header/subcategories",
+    CmsPageClass: cms.HeaderSubcategory,
     patchField: "name",
   }),
   headerCategories: defineModule({
@@ -93,6 +101,7 @@ export const MODULES = {
     apiPath: "content/header-categories",
     schema: headerCategorySchema,
     cmsPath: "header/categories",
+    CmsPageClass: cms.HeaderCategory,
     patchField: "name",
     cmsSkipReason: "nested subcategory widgets are not verified against a live admin panel",
   }),
@@ -101,6 +110,7 @@ export const MODULES = {
     apiPath: "content/headers",
     schema: headerSchema,
     cmsPath: "header",
+    CmsPageClass: cms.Header,
     patchField: "name",
     // Needs a category first: see the dedicated header API suite (Step 17).
     standalone: false,
@@ -110,6 +120,7 @@ export const MODULES = {
     apiPath: "content/cities",
     schema: () => citySchema,
     cmsPath: "locations/cities",
+    CmsPageClass: cms.City,
     patchField: "name",
   }),
   videoLessons: defineModule({
@@ -117,6 +128,7 @@ export const MODULES = {
     apiPath: "content/video-lessons",
     schema: videoLessonsSchema,
     cmsPath: "video-lessons",
+    CmsPageClass: cms.VideoLessons,
     patchField: "name",
   }),
   textBlocks: defineModule({
@@ -124,6 +136,8 @@ export const MODULES = {
     apiPath: "content/page-constructor/text-block-templates",
     schema: () => textBlockSchema,
     cmsPath: "page-constructor/text-block-templates",
+    CmsPageClass: cms.TextBlock,
+    SitePageClass: site.TextBlockPage,
     blockType: "textBlock",
     patchField: "name",
   }),
@@ -132,6 +146,8 @@ export const MODULES = {
     apiPath: "content/page-constructor/gallery-block-templates",
     schema: () => galleryBlockSchema,
     cmsPath: "page-constructor/gallery-block-templates",
+    CmsPageClass: cms.GalleryBlock,
+    SitePageClass: site.GalleryBlockPage,
     blockType: "galleryBlock",
     patchField: "name",
   }),
@@ -140,6 +156,8 @@ export const MODULES = {
     apiPath: "content/page-constructor/page-templates",
     schema: pageSchema,
     cmsPath: "page-constructor/page-templates",
+    CmsPageClass: cms.PageTemplate,
+    SitePageClass: site.PageTemplatePage,
     patchField: "name",
   }),
 } satisfies Record<string, ModuleSpec>;

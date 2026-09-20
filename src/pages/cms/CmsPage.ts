@@ -28,8 +28,8 @@ export function field(name: string): string {
   return `[id="${name}"]`;
 }
 
-/** Locator of the caption an uploader is anchored at (`<label for="...">`). */
-export function fileField(name: string): string {
+/** Locator of the `<label for="...">` a widget is anchored at (uploaders, colour pickers). */
+export function labelFor(name: string): string {
   return `[for="${name}"]`;
 }
 
@@ -151,8 +151,20 @@ export abstract class CmsPage<TPayload = unknown> {
    * awaits it — dropping it would leave `createdId` unset whenever the body arrives after the
    * success banner.
    */
-  async save(): Promise<this> {
-    await step("Save", async () => {
+  save(): Promise<this> {
+    return this.submit(SAVE, '[type="button"]', SUCCESS_LOCATOR);
+  }
+
+  /**
+   * Click a submit control, wait for its confirmation and capture the created id.
+   *
+   * Parametrised rather than inlined in `save()` because not every form submits the same way:
+   * the city form has a primary "Add" button and confirms with a notification. Python
+   * duplicated the listener bookkeeping in that subclass; a subclass here only names the three
+   * things that differ.
+   */
+  protected async submit(caption: string, button: string, confirmation: string): Promise<this> {
+    await step(caption, async () => {
       const pending: Promise<void>[] = [];
       const capture = (response: Response): void => {
         if (response.status() === HttpStatus.CREATED) {
@@ -161,8 +173,8 @@ export abstract class CmsPage<TPayload = unknown> {
       };
       this.page.on("response", capture);
       try {
-        await this.page.locator('[type="button"]').getByText(SAVE).click();
-        await this.page.locator(SUCCESS_LOCATOR).waitFor({ state: "visible" });
+        await this.page.locator(button).getByText(caption).click();
+        await this.page.locator(confirmation).waitFor({ state: "visible" });
       } finally {
         this.page.off("response", capture);
       }

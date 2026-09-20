@@ -9,6 +9,8 @@ export const ADD = "Add";
 export const CANCEL = "Cancel";
 export const DELETE = "Delete";
 export const SUCCESS_LOCATOR = '[id="success"]';
+// Forms that submit with a primary button confirm with a toast instead of the inline banner.
+export const NOTIFICATION_LOCATOR = ".ant-notification-notice-message";
 
 // Field captions used in test steps and as the anchor for file uploaders.
 export const SYSTEM_NAME = "System name";

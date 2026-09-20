@@ -62,6 +62,23 @@ export class DropDown {
     });
   }
 
+  /**
+   * Open the list and take whichever option comes first.
+   *
+   * For dropdowns whose options are entities the stand already holds and the form only needs a
+   * valid one of — the page-template block picker, say. Python looked the name up in a
+   * module-level `references()` singleton, which improvement #5 removes; nothing about the
+   * assertion that follows depends on *which* entity was picked.
+   */
+  async selectFirst(log = true): Promise<this> {
+    return this.run(`Select the first option of "${this.caption}"`, log, async () => {
+      await this.element.click();
+      const first = (await this.listbox()).locator(".ant-select-item-option").first();
+      await expect(first).toBeVisible();
+      await first.click();
+    });
+  }
+
   async selectByText(text: string, log = true): Promise<this> {
     return this.run(`Select "${this.caption}": ${text}`, log, async () => {
       await this.element.click();
