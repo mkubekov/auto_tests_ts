@@ -68,9 +68,29 @@ export function defineModule<TSchema extends AnySchema>(
   return spec;
 }
 
+/**
+ * A module whose admin form is known to exist.
+ *
+ * Python's CMS suite opened with `assert module.cms_page is not None` — a runtime restatement
+ * of something the selector had already filtered on. Narrowing the type here instead means the
+ * suite simply receives modules that have a form, and a spec that forgets the filter does not
+ * compile.
+ */
+export type CmsModule<TSchema extends AnySchema = AnySchema> = ModuleSpec<TSchema> &
+  Required<Pick<ModuleSpec<TSchema>, "CmsPageClass" | "cmsPath">>;
+
+/** A page-constructor block whose public-site view is known to exist. */
+export type SiteBlockModule<TSchema extends AnySchema = AnySchema> = ModuleSpec<TSchema> &
+  Required<Pick<ModuleSpec<TSchema>, "SitePageClass" | "blockType">>;
+
 /** A module has an admin form only when both the page object and the path are known. */
-export function hasCms(module: ModuleSpec): boolean {
+export function hasCms(module: ModuleSpec): module is CmsModule {
   return module.CmsPageClass !== undefined && module.cmsPath !== undefined;
+}
+
+/** A block reaches the rendering suite only when it can be both embedded and inspected. */
+export function isSiteBlock(module: ModuleSpec): module is SiteBlockModule {
+  return module.SitePageClass !== undefined && module.blockType !== undefined;
 }
 
 /** Modules are created on their own unless the spec says otherwise. */

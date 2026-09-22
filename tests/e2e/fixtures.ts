@@ -9,7 +9,7 @@
 // Nothing here runs during `playwright test --list`: fixtures are instantiated only when a test
 // body executes, which is what lets the whole e2e layer be verified structurally without a stand.
 
-import { type Page, test as base } from "@playwright/test";
+import { test as base, type Page } from "@playwright/test";
 import type { z } from "zod";
 import { loadSettings, type Settings } from "../../src/config/settings.js";
 import { faker, runMarker } from "../../src/data/faker.js";
@@ -21,7 +21,7 @@ import { HttpStatus } from "../../src/models/enums.js";
 import { type CreatedEntity, entityString, isEntity } from "../../src/pages/shared.js";
 import type { AnySchema, ModuleSpec } from "../../src/registry/moduleSpec.js";
 import { MODULES, moduleSpec } from "../../src/registry/modules.js";
-import { type CreateContext, createEntity, type CreatedResult } from "./helpers.js";
+import { type CreateContext, type CreatedResult, createEntity } from "./helpers.js";
 
 /** Admin session cookies the CMS sets on login. */
 const SESSION_COOKIE = "Authentication";
@@ -56,6 +56,7 @@ export interface E2EWorkerFixtures {
   anonClient: ApiClient;
   referenceData: ReferenceData;
   cmsCookies: Record<string, string>;
+  // biome-ignore lint/suspicious/noConfusingVoidType: Playwright types a value-less auto fixture as `void` — the declared shape of `use()`, not a return type.
   sweepRunEntities: void;
 }
 
@@ -71,6 +72,7 @@ export const test = base.extend<E2EFixtures, E2EWorkerFixtures>({
   // -- configuration and HTTP --------------------------------------------------------
 
   settings: [
+    // biome-ignore lint/correctness/noEmptyPattern: Playwright reads a fixture's dependencies off this pattern, so an empty one is how a fixture declares it has none.
     async ({}, use) => {
       const settings = loadSettings();
       // Python seeded Faker from a pytest hook and printed the seed in the report header.

@@ -1,12 +1,19 @@
 // Registry slices the test suites parametrise over. Pure functions over `MODULES`, so a suite
 // never filters the registry inline and every suite agrees on what "writable" means.
 
-import { hasCms, isStandalone, type ModuleSpec } from "./moduleSpec.js";
+import {
+  type CmsModule,
+  hasCms,
+  isSiteBlock,
+  isStandalone,
+  type ModuleSpec,
+  type SiteBlockModule,
+} from "./moduleSpec.js";
 import { allModules } from "./modules.js";
 
 /** A module selected for the CMS suite, plus the reason its admin-form test is skipped. */
 export interface CmsSelection {
-  module: ModuleSpec;
+  module: CmsModule;
   skipReason?: string;
 }
 
@@ -32,8 +39,6 @@ export function cmsModules(): CmsSelection[] {
 }
 
 /** Page-constructor blocks that have a public-site page object. */
-export function pageBlockModules(): ModuleSpec[] {
-  return allModules().filter(
-    (module) => module.blockType !== undefined && module.SitePageClass !== undefined,
-  );
+export function pageBlockModules(): SiteBlockModule[] {
+  return allModules().filter(isSiteBlock);
 }

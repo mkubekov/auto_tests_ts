@@ -5,12 +5,12 @@
 
 import type { z } from "zod";
 import { type ApiClient, step } from "../../src/http/apiClient.js";
-import { assertResponse, responseJson, type ResponseLike } from "../../src/http/assertions.js";
+import { assertResponse, type ResponseLike, responseJson } from "../../src/http/assertions.js";
 import type { CleanupStack } from "../../src/http/cleanupStack.js";
 import type { ReferenceSource } from "../../src/http/referenceData.js";
 import { buildPayload } from "../../src/models/common.js";
 import { HttpStatus } from "../../src/models/enums.js";
-import { type CreatedEntity, isEntity } from "../../src/pages/shared.js";
+import { type CreatedEntity, entityString, isEntity } from "../../src/pages/shared.js";
 import type { AnySchema, ModuleSpec } from "../../src/registry/moduleSpec.js";
 
 /**
@@ -43,6 +43,17 @@ export function modulePayload<TSchema extends AnySchema>(
 
 export function entityPath(module: ModuleSpec, id: string): string {
   return `${module.apiPath}/${id}`;
+}
+
+/**
+ * The item path of an entity the API just returned.
+ *
+ * Python wrote `f"{module.api_path}/{created['id']}"` at every call site; over `unknown` that
+ * subscript needs a cast, and `entityString` turns a stand that stopped returning an id into a
+ * failure naming the field instead of a request to `.../undefined`.
+ */
+export function createdPath(module: ModuleSpec, created: CreatedEntity): string {
+  return entityPath(module, entityString(created, "id"));
 }
 
 /**
