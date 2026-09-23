@@ -1,0 +1,59 @@
+# Quality gate for every push and PR. No stand exists, so the e2e suites are only listed
+# (`--list` builds the registry-driven test ids without running a fixture or needing a
+# browser) — the analog of the Python original's `pytest --collect-only` job.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Lint and format check
+        run: pnpm lint
+
+      - name: Type-check
+        run: pnpm build
+
+      - name: Unit tests
+        run: pnpm test
+
+      - name: List e2e suites
+        run: |
+          cp .env.example .env
+          pnpm test:list
+
+  secrets:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          # gitleaks scans every commit in the pushed range, not just the tip.
+          fetch-depth: 0
+
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
