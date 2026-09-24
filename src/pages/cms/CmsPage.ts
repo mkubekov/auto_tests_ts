@@ -6,7 +6,7 @@
 //
 // The generic parameter is the payload the form edits. Python's page objects took a bare
 // `dict[str, Any]`, so nothing connected a form to the model it fills; `CmsPage<TPayload>` is
-// what lets the registry tie a module's schema to its admin form (see PLAN.md §2.3,
+// what lets the registry tie a module's schema to its admin form (see README §Improvements,
 // improvement #2), and `createElement(payload)` is checked against that module's fields at
 // every call site.
 

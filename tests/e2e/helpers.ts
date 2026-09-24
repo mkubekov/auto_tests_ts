@@ -18,7 +18,7 @@ import type { AnySchema, ModuleSpec } from "../../src/registry/moduleSpec.js";
  * reference data its schema resolves defaults from.
  *
  * Python read the references off a module-level singleton, so `create_entity` needed only the
- * client and the stack. The singleton is gone (see PLAN.md §2.3, improvement #5), and passing
+ * client and the stack. The singleton is gone (see README §Improvements, improvement #5), and passing
  * the three together keeps the call sites from growing a fourth positional argument.
  */
 export interface CreateContext {

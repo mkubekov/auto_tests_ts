@@ -43,7 +43,7 @@ export class PageTemplate extends CmsPage<PageTemplatePayload> {
       );
       // Whichever template the stand offers for that block type will do: the form needs a valid
       // one, and nothing below asserts on which was picked. Python read a name out of a
-      // module-level `references()` singleton here (see PLAN.md §2.3, improvement #5).
+      // module-level `references()` singleton here (see README §Improvements, improvement #5).
       await new DropDown(
         this.page,
         "Block template",

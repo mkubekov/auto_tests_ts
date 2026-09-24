@@ -2,7 +2,29 @@
   "name": "auto-tests-ts",
   "version": "0.1.0",
   "private": true,
-  "description": "TypeScript/Playwright learning port of the cms-autotests Python test-automation project",
+  "description": "Registry-driven API, admin-panel and public-site tests for a content CMS: a TypeScript/Playwright Test port of the cms-autotests Python project",
+  "keywords": [
+    "playwright",
+    "playwright-test",
+    "typescript",
+    "test-automation",
+    "e2e",
+    "api-testing",
+    "page-object-model",
+    "zod",
+    "faker",
+    "cms"
+  ],
+  "homepage": "https://github.com/mkubekov/auto_tests_ts#readme",
+  "bugs": {
+    "url": "https://github.com/mkubekov/auto_tests_ts/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mkubekov/auto_tests_ts.git"
+  },
+  "license": "MIT",
+  "author": "Murat Kubekov <mkubekov@gmail.com>",
   "type": "module",
   "packageManager": "pnpm@12.3.4",
   "engines": {

@@ -103,7 +103,7 @@ export function withQuery(url: string, params?: QueryParams): string {
  *
  * This plus `testInfo.attach()` is the entire replacement for the Python project's
  * `reporting/attachments.py` module and its `curlify` dependency — Playwright's trace viewer
- * already records headers, timings and the network waterfall (see PLAN.md §2.3, improvements
+ * already records headers, timings and the network waterfall (see README §Improvements, improvements
  * #3 and #4), so only the human-runnable repro line is still worth writing by hand.
  */
 export function toCurl(

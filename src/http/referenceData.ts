@@ -5,7 +5,7 @@
 // models read it synchronously through `ReferenceSource`.
 //
 // There is deliberately no module-level singleton: the instance is owned by a worker-scoped
-// fixture (Phase 7) and handed to whatever needs it (see PLAN.md §2.3, improvement #5).
+// fixture (Phase 7) and handed to whatever needs it (see README §Improvements, improvement #5).
 
 import type { RequestOptions } from "./apiClient.js";
 import { type ResponseLike, responseJson } from "./assertions.js";

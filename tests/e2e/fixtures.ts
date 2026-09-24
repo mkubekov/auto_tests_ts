@@ -110,7 +110,7 @@ export const test = base.extend<E2EFixtures, E2EWorkerFixtures>({
   ],
 
   // Primed once per worker rather than lazily: zod's defaults are synchronous, so a schema
-  // cannot await a lookup while it builds a payload (see PLAN.md §2.3, improvement #5). The
+  // cannot await a lookup while it builds a payload (see README §Improvements, improvement #5). The
   // cost is one round-trip per collection; the gain is that an empty collection fails here,
   // naming the reference, instead of surfacing as a 400 from an unrelated POST.
   referenceData: [

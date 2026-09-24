@@ -23,7 +23,7 @@ export type SchemaFactory<TSchema extends AnySchema = AnySchema> = (
 /**
  * The admin form of a module, bound to the payload that module's schema produces.
  *
- * This is the payoff of `ModuleSpec` being a real generic (see PLAN.md §2.3, improvement #2):
+ * This is the payoff of `ModuleSpec` being a real generic (see README §Improvements, improvement #2):
  * Python's `page_class: type[CmsPage]` said nothing about which model the form edits, so
  * `create_element(payload)` took a `dict[str, Any]` and a wrong payload only failed in the
  * browser. Here a mismatched pair is a compile error at the registry entry.

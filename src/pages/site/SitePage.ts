@@ -15,7 +15,7 @@ import { type CreatedEntity, stripHtml } from "../shared.js";
 /**
  * Navigation and assertion primitives plus the contract every rendered block implements.
  *
- * Generic over the payload for the same reason `CmsPage` is (see PLAN.md §2.3, improvement #2):
+ * Generic over the payload for the same reason `CmsPage` is (see README §Improvements, improvement #2):
  * Python's `check_created_item(payload: dict[str, Any], created: dict[str, Any])` accepted any
  * two dicts, so nothing tied a site page object to the module whose block it renders. Here the
  * registry can only pair a block with the view of its own payload.

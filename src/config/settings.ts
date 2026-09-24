@@ -25,7 +25,7 @@ const settingsSchema = z.object({
 
   testPagePath: z.string().default("/autotest"),
   // Collapses Python's `viewport: str` field plus its separate `viewport_size` computed
-  // property into one declaration (see PLAN.md §2.3, improvement #8).
+  // property into one declaration (see README §Improvements, improvement #8).
   viewport: z
     .string()
     .default("1920x1080")
@@ -65,7 +65,7 @@ export interface Settings extends ParsedSettings {
 
 /**
  * Aggregated settings validation failure. Wraps the underlying `ZodError` so callers can
- * format it however they need (see PLAN.md §2.3, improvement #9), while `.message` already
+ * format it however they need (see README §Improvements, improvement #9), while `.message` already
  * reads well on its own (e.g. printed by a CI job).
  */
 export class SettingsError extends Error {

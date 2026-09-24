@@ -73,7 +73,7 @@ export async function assertStatus(response: ResponseLike, expected: number): Pr
  *
  * Returning the parsed data is the point: in TypeScript `(await res.json()) as Foo` is a claim
  * the compiler cannot check, so this is the only place a response becomes genuinely typed
- * (see PLAN.md §2.3, improvement #1).
+ * (see README §Improvements, improvement #1).
  */
 export async function assertSchema<T extends z.ZodTypeAny>(
   response: ResponseLike,
