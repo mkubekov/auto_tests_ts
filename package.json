@@ -38,9 +38,9 @@
     "test:list": "playwright test --project=api --project=cms --project=ui --list"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.5.12",
-    "@playwright/test": "^1.63.0",
-    "@types/node": "^22.20.1",
+    "@biomejs/biome": "2.6.4",
+    "@playwright/test": "^1.64.1",
+    "@types/node": "^26.6.6",
     "typescript": "^7.0.2"
   },
   "dependencies": {
